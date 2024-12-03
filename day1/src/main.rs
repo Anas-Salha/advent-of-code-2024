@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::{self, BufRead};
 
 fn main() {
-    let filename = "data/main.input";
+    let filename = "data/input";
     let file = File::open(filename).unwrap();
     let reader = io::BufReader::new(file);
 
@@ -32,5 +32,14 @@ fn main() {
         })
         .sum::<u32>();
 
+    let similarity_score: u32 = left_list
+        .iter()
+        .map(|number| {
+            let count = right_list.iter().filter(|x| *x == number).count() as u32;
+            count * number
+        })
+        .sum::<u32>();
+
     println!("{total_distance}");
+    println!("{similarity_score}");
 }
