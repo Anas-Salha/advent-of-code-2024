@@ -13,11 +13,11 @@ fn main() {
         .map(|c| match &c[0] {
             "do()" => {
                 flag = true;
-                return 0;
+                0
             }
             "don't()" => {
                 flag = false;
-                return 0;
+                0
             }
             _ => c[1].parse::<u32>().unwrap() * c[2].parse::<u32>().unwrap() * (flag as u32),
         })

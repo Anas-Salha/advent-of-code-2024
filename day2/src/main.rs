@@ -7,24 +7,22 @@ enum Direction {
     Decreasing,
 }
 
-fn is_gradual(data: &Vec<u32>) -> bool {
-    data.windows(2).all(|w| match w[0].abs_diff(w[1]) {
-        1..=3 => true,
-        _ => false,
-    })
+fn is_gradual(data: &[u32]) -> bool {
+    data.windows(2)
+        .all(|w| matches!(w[0].abs_diff(w[1]), 1..=3))
 }
 
-fn is_uni_directional(data: &Vec<u32>, direction: Direction) -> bool {
+fn is_uni_directional(data: &[u32], direction: Direction) -> bool {
     match direction {
         Direction::Decreasing => data.windows(2).all(|w| w[0] > w[1]),
         Direction::Increasing => data.windows(2).all(|w| w[0] < w[1]),
     }
 }
 
-fn is_safe(data: &Vec<u32>) -> bool {
-    (is_uni_directional(&data, Direction::Increasing)
-        || is_uni_directional(&data, Direction::Decreasing))
-        && is_gradual(&data)
+fn is_safe(data: &[u32]) -> bool {
+    (is_uni_directional(data, Direction::Increasing)
+        || is_uni_directional(data, Direction::Decreasing))
+        && is_gradual(data)
 }
 
 fn is_safe_with_dampener(data: Vec<u32>) -> bool {
@@ -46,7 +44,7 @@ fn main() {
 
     let safe_lines = reader
         .lines()
-        .filter_map(|line| line.ok())
+        .map_while(Result::ok)
         .map(|line| {
             line.split(' ')
                 .map(|number| number.parse::<u32>().unwrap())

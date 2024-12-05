@@ -8,7 +8,7 @@ fn main() {
 
     let (mut left_list, mut right_list): (Vec<u32>, Vec<u32>) = reader
         .lines()
-        .filter_map(|line| line.ok())
+        .map_while(Result::ok)
         .map(|line| {
             let parts: Vec<&str> = line.split("   ").collect();
             let left: u32 = parts[0].parse().unwrap();
@@ -26,10 +26,7 @@ fn main() {
     let total_distance: u32 = left_list
         .iter()
         .enumerate()
-        .map(|(index, value)| {
-            let distance = value.abs_diff(right_list[index]);
-            distance
-        })
+        .map(|(index, value)| value.abs_diff(right_list[index]))
         .sum::<u32>();
 
     let similarity_score: u32 = left_list
